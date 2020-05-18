@@ -34,8 +34,7 @@
     </h4>
 </div>
 
-This is the submodule containing the implementation of SEED development
-environment utility.
+This is the submodule containing the implementation of the SEED node installer.
 
 The main repository of the SEED Virtual Reality Platform is located
 [here](https://github.com/suisei-entertainment/seed).

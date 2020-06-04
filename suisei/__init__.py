@@ -19,17 +19,5 @@
 ## ============================================================================
 
 """
-Contains the version data of the package.
+Contains the implementation of the SEED installer utility.
 """
-
-## ============================================================================
-##     THIS IS A GENERATED FILE. DO NOT MODIFY IT MANUALLY.
-## ============================================================================
-
-SEED_INSTALLER_MAJOR_VERSION = 0
-SEED_INSTALLER_MINOR_VERSION = 1
-SEED_INSTALLER_PATCH_LEVEL = 0
-SEED_INSTALLER_BUILD = 11
-SEED_INSTALLER_RELEASE_LEVEL = 'development'
-SEED_INSTALLER_RELEASE_CODENAME = 'Sulaco'
-SEED_INSTALLER_SCM_ID = '846b2cc636bcf06af7088e3638bda6e92d647f39'

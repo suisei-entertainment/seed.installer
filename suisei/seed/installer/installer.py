@@ -27,7 +27,10 @@ import os
 
 # Murasame Imports
 from murasame.application import (
-    BusinessLogic, StartupConfiguration, CliApplication)
+    BusinessLogic,
+    StartupConfiguration,
+    CliApplication,
+    ApplicationReturnCodes)
 from murasame.exceptions import InvalidLicenseKeyError
 
 # SEED Imports

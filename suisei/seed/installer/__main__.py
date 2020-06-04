@@ -38,9 +38,9 @@ except ImportError:
     raise SystemExit
 
 # SEED Imports
-from .installer import Installer
+from suisei.seed.installer.installer import Installer
 
-from .constants import (
+from suisei.seed.installer.constants import (
     CLI_COMMAND_MAP,
     CLI_DESCRIPTION_STRING,
     CLI_EPILOGUE_STRING,

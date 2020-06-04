@@ -22,8 +22,20 @@
 Contains the entry point of the SEED installer utility.
 """
 
+# Platform Imports
+import os
+
+# Dependency Imports
+from termcolor import colored
+
 # Murasame Imports
-from murasame.utils import CliProcessor
+try:
+    from murasame.utils import CliProcessor
+except ImportError:
+    print(colored(
+        '<ERROR> - The SEED installer requires the Murasame framework to run.',
+        'red'))
+    raise SystemExit
 
 # SEED Imports
 from .installer import Installer
@@ -40,12 +52,22 @@ def main() -> None:
     The entry point of the SEED installer utility.
     """
 
+    # Only start the installer if it's executed with root privileges.
+    if os.geteuid() != 0:
+        print(colored(
+            '<ERROR> - The SEED installer has to be exeuted with root '
+            'privileges.',
+            'red'))
+        raise SystemExit
+
+    # Create CLI processor
     cli_processor = CliProcessor(
         command_map=CLI_COMMAND_MAP,
         description_string=CLI_DESCRIPTION_STRING,
         usage_string=CLI_USAGE_STRING,
         epilog_string=CLI_EPILOGUE_STRING)
 
+    # Process command line and start the application.
     cli_processor.process(
         args=sys.argv[1:],
         cb_argument_processor=Installer.cb_process_command_line)

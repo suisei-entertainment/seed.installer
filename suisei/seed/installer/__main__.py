@@ -31,6 +31,7 @@ from termcolor import colored
 # Murasame Imports
 try:
     from murasame.utils import CliProcessor
+    from murasame.exceptions import InvalidLicenseKeyError
 except ImportError:
     print(colored(
         '<ERROR> - The SEED installer requires the Murasame framework to run.',
@@ -68,9 +69,16 @@ def main() -> None:
         epilog_string=CLI_EPILOGUE_STRING)
 
     # Process command line and start the application.
-    cli_processor.process(
-        args=sys.argv[1:],
-        cb_argument_processor=Installer.cb_process_command_line)
+    try:
+        cli_processor.process(
+            args=sys.argv[1:],
+            cb_argument_processor=Installer.cb_process_command_line)
+    except InvalidLicenseKeyError:
+        print(colored(
+            '<ERROR> - A valid license file is required to run the SEED '
+            'installer.',
+            'red'))
+        raise SystemExit
 
 if __name__ == '__main__':
     main()

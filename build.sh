@@ -243,6 +243,8 @@ def create_binary() -> None:
         '--clean',
         '--noconfirm',
         '--name=seed.installer',
+        '--additional-hooks-dir=./hooks',
+        '--hidden-import=pkg_resources.py2_warn',
         './suisei/seed/installer/__main__.py'
     ]
 

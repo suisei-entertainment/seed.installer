@@ -25,6 +25,9 @@ Contains the implementation of the SEED Installer's business logic.
 # Platform Imports
 import os
 
+# Dependency Imports
+import urwid
+
 # Murasame Imports
 from murasame.application import (
     BusinessLogic,
@@ -90,16 +93,16 @@ class Installer(BusinessLogic):
                 os.path.expanduser(arguments.license_key))
 
         if not license_path:
-            raise InvalidLicenseKeyError(
-                'A valid license key is required to install a SEED node.')
+            print('No license file provided.')
+            license_path = 'test.lic'
+            #raise InvalidLicenseKeyError(
+            #    'A valid license key is required to install a SEED node.')
 
         # Configure working directory
         working_directory = os.path.abspath(
             os.path.expanduser(DEFAULT_WORKING_DIRECTORY))
 
-        # Configure license key
         license_key = f'{working_directory}/license.pem'
-        Installer._write_license_key(license_key=license_key)
 
         # Create startup configuration.
         startup_configuration = StartupConfiguration()
@@ -112,11 +115,15 @@ class Installer(BusinessLogic):
             force_create_log_directory=True)
         startup_configuration.set_debug_mode(debug_mode=debug_mode)
         startup_configuration.set_license(
-            license_required=True,
+            #license_required=True,
+            license_required=False,
             license_key=license_key,
             license_path=license_path)
         startup_configuration.set_sentry_dsn(
             sentry_dsn=SEED_SENTRY_DSN)
+
+        # Write the license key to disk
+        Installer._write_license_key(license_key=license_key)
 
         # Create the application
         application = CliApplication(
@@ -164,6 +171,11 @@ class Installer(BusinessLogic):
 
         del args
         del kwargs
+
+        fill = urwid.Filler(urwid.Text('SEED Installer'))
+        loop = urwid.MainLoop(fill, 'top')
+        loop.run()
+
         return ApplicationReturnCodes.SUCCESS
 
     def before_main_loop(self, *args, **kwargs) -> None:

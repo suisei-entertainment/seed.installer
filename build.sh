@@ -240,7 +240,6 @@ def create_binary() -> None:
     [
         'pyinstaller',
         '--onefile',
-        '--clean',
         '--noconfirm',
         '--name=seed.installer',
         '--additional-hooks-dir=./hooks',

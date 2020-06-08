@@ -25,6 +25,7 @@ Contains the implementation of the SEED Installer's business logic.
 # Platform Imports
 import os
 import traceback
+from math import ceil
 
 # Dependency Imports
 import urwid
@@ -68,6 +69,11 @@ class Installer(BusinessLogic):
 
         Authors:
             Attila Kovacs
+        """
+
+        self._startup_configuration = None
+        """
+        The startup configuration of the application.
         """
 
         self._main_loop = None
@@ -216,7 +222,8 @@ class Installer(BusinessLogic):
 
             host_info = urwid.Text(
                 ('normal', f'CPU: {self._host.Hardware.CPU.Name}\n'
-                           f'Memory: {int(self._host.Hardware.Memory.TotalSystemMemory/1024/1024)} MB\n'
+                           f'Architecture: {self._host.Hardware.CPU.Architecture}\n'
+                           f'Memory: {ceil(self._host.Hardware.Memory.TotalSystemMemory/1024/1024/1024)} GB\n'
                            f'Public IP: {self._host.Hardware.Networking.PublicIP}\n'
                            f'OS: {self._host.OS.Name}({self._host.OS.Version})\n'
                            f'Python version: {self._host.Python.PythonVersion}'))
@@ -282,7 +289,8 @@ class Installer(BusinessLogic):
         del kwargs
 
         print('Detecting host system...', end=' ')
-        self._host = HostDescriptor()
+        self._host = HostDescriptor(
+            geoip_database_path=self._startup_configuration.WorkingDirectory)
         print(colored('DONE', 'green'))
 
     def after_main_loop(self, *args, **kwargs) -> None:
@@ -321,7 +329,7 @@ class Installer(BusinessLogic):
 
         #pylint: disable=no-self-use
 
-        del startup_configuration
+        self._startup_configuration = startup_configuration
 
     def on_uncaught_exception(self, exception: Exception) -> None:
 

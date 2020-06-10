@@ -23,7 +23,7 @@ Contains common constants used by the SEED installer utility.
 """
 
 # Path to the directory where the utility will store its log files.
-DEFAULT_LOG_DIRECTORY = '/var/logs/seed/'
+DEFAULT_LOG_DIRECTORY = '/var/log/seed/'
 
 # Path to the directory that the application will use as a working directory.
 DEFAULT_WORKING_DIRECTORY = '/opt/seed/installer/'
@@ -47,6 +47,9 @@ SEED_LICENSE_PUBLIC_KEY = \
     'Ruu1HkkFeXfE5JNhg7b/n1ZEh5DPpNE9hNlhUg7TjpHfjkGZJnwCBDxxEkvJE5mB\n'\
     'rtE9uLwlUmqNtgutNoQnpm0CAwEAAQ==\n'\
     '-----END PUBLIC KEY-----'
+
+# The Maxmind license key to use to download the GeoIP database.
+SEED_GEOIP_LICENSE_KEY = 'pELDCVUneMIsHhyU'
 
 # The description string to use in the CLI help.
 CLI_DESCRIPTION_STRING = \

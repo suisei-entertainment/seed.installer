@@ -45,7 +45,8 @@ from .constants import (
     DEFAULT_LOG_DIRECTORY,
     DEFAULT_WORKING_DIRECTORY,
     SEED_SENTRY_DSN,
-    SEED_LICENSE_PUBLIC_KEY)
+    SEED_LICENSE_PUBLIC_KEY,
+    SEED_GEOIP_LICENSE_KEY)
 
 from .version import (
     SEED_INSTALLER_MAJOR_VERSION,
@@ -220,13 +221,21 @@ class Installer(BusinessLogic):
                 ('normal', 'Press Q to quit, or any other key to continue...'),
                 align='right')
 
+            host_country = 'UNKNOWN'
+            host_city = 'UNKNOWN'
+
+            if self._host.Hardware.Networking.HostLocation is not None:
+                host_country = self._host.Hardware.Networking.HostLocation.Country
+                host_city = self._host.Hardware.Networking.HostLocation.City
+
             host_info = urwid.Text(
-                ('normal', f'CPU: {self._host.Hardware.CPU.Name}\n'
-                           f'Architecture: {self._host.Hardware.CPU.Architecture}\n'
-                           f'Memory: {ceil(self._host.Hardware.Memory.TotalSystemMemory/1024/1024/1024)} GB\n'
-                           f'Public IP: {self._host.Hardware.Networking.PublicIP}\n'
-                           f'OS: {self._host.OS.Name}({self._host.OS.Version})\n'
-                           f'Python version: {self._host.Python.PythonVersion}'))
+                ('normal',
+                 f'CPU: {self._host.Hardware.CPU.Name}\n'
+                 f'Architecture: {self._host.Hardware.CPU.Architecture}\n'
+                 f'Memory: {ceil(self._host.Hardware.Memory.TotalSystemMemory/1024/1024/1024)} GB\n'
+                 f'Public IP: {self._host.Hardware.Networking.PublicIP} ({host_country}, {host_city})\n'
+                 f'OS: {self._host.OS.Name}({self._host.OS.Version})\n'
+                 f'Python version: {self._host.Python.PythonVersion}'))
 
             blank = urwid.Divider()
 
@@ -290,7 +299,9 @@ class Installer(BusinessLogic):
 
         print('Detecting host system...', end=' ')
         self._host = HostDescriptor(
-            geoip_database_path=self._startup_configuration.WorkingDirectory)
+            geoip_database_path=self._startup_configuration.WorkingDirectory,
+            auto_download_geoip_database=True,
+            geoip_license_key=SEED_GEOIP_LICENSE_KEY)
         print(colored('DONE', 'green'))
 
     def after_main_loop(self, *args, **kwargs) -> None:
